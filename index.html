@@ -155,14 +155,14 @@
         <!-- SEÇÃO 1: COUNTDOWN ROMÂNTICO -->
         <section class="relative bg-white/85 backdrop-blur-md rounded-[1.75rem] sm:rounded-[2.2rem] p-5 sm:p-10 border-4 border-white shadow-romantic mb-10 sm:mb-14 text-center">
             <!-- Detalhe de fita adesiva no topo do cartão -->
-            <div class="washi-tape w-24 sm:w-28 h-6 sm:h-7 mx-auto -mt-8 sm:-mt-10 mb-4 sm:mb-5 rounded-sm -rotate-2"></div>
+            <div class="washi-tape w-24 sm:w-28 h-6 sm:h-7 mx-auto -mt-9 sm:-mt-14 mb-4 sm:mb-5 rounded-sm -rotate-2"></div>
 
             <div class="inline-block bg-butterDeep text-amber-900 font-bold text-[11px] sm:text-sm px-3.5 sm:px-4 py-1.5 rounded-full mb-3 border border-amber-200 leading-snug">
                 ✨ Conto com a sua presença para comemorar
             </div>
 
             <h1 id="main-headline" class="font-serif text-2xl sm:text-5xl font-bold text-loveRed leading-tight mb-2 px-1">
-                Nosso Aniversário de Namoro
+                Dia Oficial de Momirs
             </h1>
             
             <p id="target-date-subtitle" class="text-rose-700/80 font-semibold text-xs sm:text-base mb-6 sm:mb-8">
@@ -225,18 +225,11 @@
             </div>
 
             <!-- Botão para Adicionar Novo Plano de Verão -->
-            <div class="text-center mt-8 sm:mt-9 flex flex-col items-center gap-3 px-2">
+            <div class="text-center mt-8 sm:mt-9 px-2">
                 <button onclick="openAddPlanModal()" 
                     class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-loveRed hover:bg-cherry text-white font-bold text-sm sm:text-base px-6 py-3.5 rounded-full shadow-romantic transition-all hover:-translate-y-0.5 active:scale-95 cursor-pointer">
                     <span class="text-lg">✨</span>
                     <span>Adicionar Novo Plano de Verão</span>
-                </button>
-
-                <!-- Botão utilitário para exportar lista editada -->
-                <button id="copy-json-btn" onclick="copyPlansJSON()" 
-                    class="inline-flex items-center gap-1.5 bg-white/85 hover:bg-white text-rose-700 border border-rose-200 font-semibold text-xs px-4 py-2 rounded-full shadow-sm transition-all cursor-pointer active:scale-95">
-                    <span>📋</span>
-                    <span id="copy-json-label">Copiar lista atualizada (JSON)</span>
                 </button>
             </div>
         </section>
@@ -272,7 +265,7 @@
                     Título do Plano
                 </h3>
 
-                <p id="modal-description" class="text-rose-900/85 text-center text-sm sm:text-base leading-relaxed mb-6 font-medium bg-white/70 p-4 rounded-2xl border border-rose-100">
+                <p id="modal-description" class="text-rose-900/85 text-center text-sm sm:text-base leading-relaxed mb-6 font-medium bg-white/70 p-4 rounded-2xl border border-rose-100 whitespace-pre-line">
                     Descrição carinhosa do plano...
                 </p>
 
@@ -386,20 +379,6 @@
                     <textarea id="new-plan-desc" rows="3" placeholder="Escreva o que vocês vão fazer juntos..." required
                         class="w-full px-4 py-3 rounded-xl bg-butter border-2 border-rose-200 focus:border-loveRed focus:outline-none font-medium text-base text-rose-950 resize-none"></textarea>
                 </div>
-                    <input type="hidden" id="selected-emoji" value="🍓">
-                </div>
-
-                <div>
-                    <label class="block text-xs font-bold uppercase tracking-wider text-rose-800 mb-1">Nome do Plano</label>
-                    <input type="text" id="new-plan-title" placeholder="Ex: Tomar banho de chuva" required maxlength="35"
-                        class="w-full px-4 py-3 rounded-xl bg-butter border-2 border-rose-200 focus:border-loveRed focus:outline-none font-semibold text-rose-950">
-                </div>
-
-                <div>
-                    <label class="block text-xs font-bold uppercase tracking-wider text-rose-800 mb-1">Bilhetinho Carinhoso</label>
-                    <textarea id="new-plan-desc" rows="3" placeholder="Escreva o que vocês vão fazer juntos..." required
-                        class="w-full px-4 py-3 rounded-xl bg-butter border-2 border-rose-200 focus:border-loveRed focus:outline-none font-medium text-rose-950 resize-none"></textarea>
-                </div>
 
                 <button type="submit" class="w-full bg-loveRed hover:bg-cherry text-white font-bold py-3.5 rounded-2xl shadow-romantic transition-all cursor-pointer active:scale-95">
                     Colar no Mural ✨
@@ -415,90 +394,90 @@
         // --- 1. DADOS INICIAIS PADRÃO ---
         const DEFAULT_PLANS = [
             {
-                id: 'plan-1',
-                emoji: '🧺',
-                title: 'Piquenique ao Pôr do Sol',
-                tag: 'Fim de tarde dourado',
-                description: 'Estender uma toalha bem bonita na grama, levar frutas frescas, docinhos e ficar conversando até o céu ficar todo rosa e laranja.',
-                bg: 'bg-rose-100/90',
-                rotate: '-2deg',
+                id: "plan-1",
+                emoji: "🧺",
+                title: "Piquenique ao Pôr do Sol",
+                tag: "Fim de tarde romântico",
+                description: "Estender uma toalha na grama, levar frutinhas, docinhos e ficar falando besteira até o céu ficar todo rosa e laranja.",
+                bg: "bg-rose-100/90",
+                rotate: "-2deg",
                 completed: false,
                 custom: false
             },
             {
-                id: 'plan-2',
-                emoji: '🍦',
-                title: 'Sorvete & Caminhada',
-                tag: 'Doce de verão',
-                description: 'Sair sem pressa no meio da tarde calorosa para tomar o nosso sorvete favorito e caminhar de mãos dadas rindo de bobeira.',
-                bg: 'bg-amber-100/90',
-                rotate: '2deg',
+                id: "plan-2",
+                emoji: "🍦",
+                title: "Sorvete & Praia",
+                tag: "Sonho de verão",
+                description: "Descansar na praia sem pressa para voltar pra casa, tomar um sorvetinho bem gelado na sombra, comer um milho cheio de sal e manteiga (e areia) e aproveitar o mar.",
+                bg: "bg-amber-100/90",
+                rotate: "2deg",
                 completed: false,
                 custom: false
             },
             {
-                id: 'plan-3',
-                emoji: '✨',
-                title: 'Ver as Estrelas',
-                tag: 'Noite mágica',
-                description: 'Deitar olhando para o céu limpo de verão, tentar achar constelações e fazer pedidos secretos juntos.',
-                bg: 'bg-blush',
-                rotate: '-1.5deg',
+                id: "plan-3",
+                emoji: "✨",
+                title: "Ver as Estrelas",
+                tag: "Noite mágica",
+                description: "Deitar olhando para o céu limpo de verão, tentar achar constelações e fazer pedidos secretos juntos.",
+                bg: "bg-blush",
+                rotate: "-1.5deg",
                 completed: false,
                 custom: false
             },
             {
-                id: 'plan-4',
-                emoji: '🍿',
-                title: 'Cinema ao Ar Livre',
-                tag: 'Sessão pipoca',
-                description: 'Montar um cantinho cheio de almofadas e pisca-pisca na varanda ou quintal para assistir nosso filme favorito abraçadinhos.',
-                bg: 'bg-rose-100/90',
-                rotate: '2.5deg',
+                id: "plan-4",
+                emoji: "🍿",
+                title: "Cinema Especial",
+                tag: "Sessão pipoca",
+                description: "Montar um cantinho maneiro em casa para assistir um super mega filme bem abraçadinhos em um dia de tempestade de verão, daquelas bem assustadoras.",
+                bg: "bg-rose-100/90",
+                rotate: "2.5deg",
                 completed: false,
                 custom: false
             },
             {
-                id: 'plan-5',
-                emoji: '🚗',
-                title: 'Viagem Bate-Volta',
-                tag: 'Pé na estrada',
-                description: 'Colocar nossa playlist no volume máximo, abrir os vidros para sentir o vento e descobrir um lugar novo juntos.',
-                bg: 'bg-amber-100/90',
-                rotate: '1.5deg',
+                id: "plan-5",
+                emoji: "🏖️",
+                title: "Pular do Trapiche",
+                tag: "Superando (meus) medos",
+                description: "Seja na Costa ou no Canal da Barra, quero aproveitar o verão e pular do trapiche mergulhando sem medo!!!",
+                bg: "bg-amber-100/90",
+                rotate: "1.5deg",
                 completed: false,
                 custom: false
             },
             {
-                id: 'plan-6',
-                emoji: '🍉',
-                title: 'Cozinhar Algo Gelado',
-                tag: 'Masterchef do amor',
-                description: 'Preparar drinks sem álcool super coloridos, espetinhos de frutas ou uma sobremesa gelada fazendo bagunça na cozinha.',
-                bg: 'bg-blush',
-                rotate: '-2.5deg',
+                id: "plan-6",
+                emoji: "📸",
+                title: "Trilha da Costa da Lagoa",
+                tag: "Tradição anual",
+                description: "Cruzar a trilha da Lagoa parando na cachoeirinha, dar muitos bom dias, encontrar nossos bambus e observar todos os tipos de bichinhos no caminho.\n\nP.S: Levar repelente, petisco pra gato e um objeto afiado.",
+                bg: "bg-blush",
+                rotate: "-2.5deg",
                 completed: false,
                 custom: false
             },
             {
-                id: 'plan-7',
-                emoji: '🌅',
-                title: 'Ver o Sol Nascer',
-                tag: 'Madrugada especial',
-                description: 'Acordar bem cedinho, levar um cafezinho quente e assistir o primeiro raio de sol do dia iluminar você.',
-                bg: 'bg-rose-100/90',
-                rotate: '2deg',
+                id: "plan-7",
+                emoji: "🌅",
+                title: "Ver o Sol Nascer",
+                tag: "Madrugada no Poção",
+                description: "Acordar bem cedinho, levar um cafezinho quente e assistir o primeiro raio de sol do dia iluminar você e toda a cachoeira do Poção.",
+                bg: "bg-rose-100/90",
+                rotate: "2deg",
                 completed: false,
                 custom: false
             },
             {
-                id: 'plan-8',
-                emoji: '🚲',
-                title: 'Passeio de Bicicleta',
-                tag: 'Brisa leve',
-                description: 'Dar uma volta no parque ou na orla sentindo a brisa do verão e parando para tirar várias fotos espontâneas.',
-                bg: 'bg-amber-100/90',
-                rotate: '-1.5deg',
+                id: "plan-8",
+                emoji: "🚲",
+                title: "Passeio de Bicicleta",
+                tag: "Tour da Zenóbia 2.0",
+                description: "Dar uma volta na Daniela sentindo a brisa do verão e parando para tirar várias fotos de jacarés e coisas legais.",
+                bg: "bg-amber-100/90",
+                rotate: "-1.5deg",
                 completed: false,
                 custom: false
             }
@@ -514,20 +493,26 @@
 
         let appState = {
             names: 'Você & Eu',
-            headline: 'Nosso Aniversário de Namoro',
+            headline: 'Dia Oficial de Momirs',
             targetDate: getDefaultTargetDate(),
-            plans: [...DEFAULT_PLANS]
+            plans: DEFAULT_PLANS.map(plan => ({ ...plan }))
         };
 
         let activePlanId = null;
 
-        // Carrega dados salvos no localStorage (chave v2 para aplicar a nova data padrão imediatamente)
+        // Carrega dados salvos no localStorage (chave v3 para garantir os planos atualizados)
         function loadState() {
             try {
-                const saved = localStorage.getItem('romanticSummerCountdown_v2');
+                const saved = localStorage.getItem('romanticSummerCountdown_v3');
                 if (saved) {
                     const parsed = JSON.parse(saved);
-                    appState = { ...appState, ...parsed };
+                    appState = {
+                        ...appState,
+                        ...parsed,
+                        plans: Array.isArray(parsed.plans) && parsed.plans.length > 0
+                            ? parsed.plans
+                            : DEFAULT_PLANS.map(plan => ({ ...plan }))
+                    };
                 }
             } catch (e) {
                 console.warn('Não foi possível carregar o localStorage:', e);
@@ -536,7 +521,7 @@
 
         function saveState() {
             try {
-                localStorage.setItem('romanticSummerCountdown_v2', JSON.stringify(appState));
+                localStorage.setItem('romanticSummerCountdown_v3', JSON.stringify(appState));
             } catch (e) {
                 console.warn('Erro ao salvar no localStorage:', e);
             }
@@ -728,35 +713,6 @@
             saveState();
             renderStickers();
             openPlanModal(plan.id);
-        }
-
-        function copyPlansJSON() {
-            const jsonText = JSON.stringify(appState.plans, null, 2);
-            const label = document.getElementById('copy-json-label');
-            const originalText = 'Copiar lista atualizada (JSON)';
-
-            const textArea = document.createElement('textarea');
-            textArea.value = jsonText;
-            textArea.style.position = 'fixed';
-            textArea.style.left = '-9999px';
-            document.body.appendChild(textArea);
-            textArea.select();
-
-            try {
-                document.execCommand('copy');
-                label.textContent = 'Lista copiada! ✅';
-                setTimeout(() => {
-                    label.textContent = originalText;
-                }, 2500);
-            } catch (err) {
-                console.warn('Erro ao copiar JSON:', err);
-                label.textContent = 'Não foi possível copiar';
-                setTimeout(() => {
-                    label.textContent = originalText;
-                }, 2500);
-            } finally {
-                document.body.removeChild(textArea);
-            }
         }
 
         function togglePlanCompleted() {
