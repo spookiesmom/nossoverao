@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nosso Dia & Planos de Verão 💕</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Fraunces (Display romântica) & Agrave Pro (Tipografia de texto) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Agrave+Pro:wght@300;400;500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,800;1,9..144,600&display=swap" rel="stylesheet">
+    
+    <!-- Canvas Confetti para celebrações -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        butter: '#FFFBEB',      // Amarelo manteiga bem clarinho (fundo principal)
+                        butterDeep: '#FEF3C7',  // Amarelo suave para detalhes
+                        loveRed: '#E11D48',     // Vermelho vibrante romântico (Rose 600)
+                        cherry: '#BE123C',      // Vermelho cereja profundo
+                        bubblegum: '#FB7185',   // Rosa vibrante
+                        blush: '#FFE4E6',       // Rosa bem clarinho
+                        peach: '#FDBA74',       // Toque quente de verão
+                    },
+                    fontFamily: {
+                        serif: ['Fraunces', 'Georgia', 'serif'],
+                        sans: ['"Agrave Pro"', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'romantic': '0 12px 32px -8px rgba(225, 29, 72, 0.18)',
+                        'sticker': '0 8px 20px -4px rgba(225, 29, 72, 0.14), 0 2px 6px -1px rgba(0, 0, 0, 0.05)',
+                        'sticker-hover': '0 16px 28px -6px rgba(225, 29, 72, 0.28)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        html, body {
+            max-width: 100%;
+            overflow-x: hidden;
+        }
+
+        body {
+            background-color: #FFFDF0;
+            /* Padrão SVG repetível de listrinhas orgânicas levemente onduladas em amarelo manteiga e rosa blush */
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='240' viewBox='0 0 120 240'%3E%3Crect width='120' height='240' fill='%23FFFDF0'/%3E%3Cpath d='M 0 0 Q 7 60 0 120 T 0 240 L 30 240 Q 37 180 30 120 T 30 0 Z' fill='%23FFEBF0' fill-opacity='0.85'/%3E%3Cpath d='M 60 0 Q 53 60 60 120 T 60 240 L 90 240 Q 83 180 90 120 T 90 0 Z' fill='%23FFF5CC' fill-opacity='0.75'/%3E%3C/svg%3E");
+            background-repeat: repeat;
+            background-size: 120px 240px;
+            font-family: 'Agrave Pro', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        @media (min-width: 768px) {
+            body {
+                background-attachment: fixed;
+            }
+        }
+
+        body, button, input, textarea, select {
+            font-family: 'Agrave Pro', sans-serif;
+        }
+
+        /* Efeito de adesivo (borda branca grossa + sombra) */
+        .sticker-card {
+            border: 4px solid #FFFFFF;
+            transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .sticker-card:hover {
+            transform: translateY(-6px) rotate(var(--hover-rotate, 2deg)) scale(1.04);
+        }
+
+        .sticker-card:active {
+            transform: scale(0.97);
+        }
+
+        /* Fita adesiva decorativa (Washi Tape) */
+        .washi-tape {
+            background: rgba(251, 113, 133, 0.35);
+            backdrop-filter: blur(2px);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+        }
+
+        /* Animação sutil de flutuação */
+        @keyframes floatSlow {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-8px) rotate(3deg); }
+        }
+
+        .animate-float {
+            animation: floatSlow 4s ease-in-out infinite;
+        }
+
+        /* Corações flutuantes de fundo */
+        .floating-bg-item {
+            position: fixed;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.35;
+            animation: riseUp linear infinite;
+        }
+
+        @keyframes riseUp {
+            0% {
+                transform: translateY(105vh) rotate(0deg) scale(0.8);
+                opacity: 0;
+            }
+            15% {
+                opacity: 0.35;
+            }
+            85% {
+                opacity: 0.35;
+            }
+            100% {
+                transform: translateY(-15vh) rotate(360deg) scale(1.1);
+                opacity: 0;
+            }
+        }
+
+        /* Modal backdrop */
+        .modal-backdrop {
+            background-color: rgba(136, 19, 55, 0.35);
+            backdrop-filter: blur(6px);
+        }
+    </style>
+</head>
+<body class="text-rose-950 min-h-screen relative selection:bg-rose-200 selection:text-rose-900">
+
+    <!-- Container para partículas/corações decorativos no fundo -->
+    <div id="floating-bg" aria-hidden="true"></div>
+
+    <!-- Wrapper Principal -->
+    <div class="relative z-10 max-w-4xl mx-auto px-3.5 sm:px-6 py-5 sm:py-10">
+
+        <!-- BARRA SUPERIOR / HEADER -->
+        <header class="flex items-center justify-center mb-6 sm:mb-12">
+            <!-- Badge do Casal -->
+            <div class="inline-flex items-center gap-2 bg-white/90 backdrop-blur-sm px-4 sm:px-5 py-2 sm:py-2.5 rounded-full border-2 border-rose-200 shadow-sm max-w-full">
+                <span class="text-base sm:text-lg animate-pulse shrink-0">💌</span>
+                <span id="couple-names-display" class="font-bold text-rose-700 text-xs sm:text-base tracking-wide truncate">
+                    Você & Eu
+                </span>
+            </div>
+        </header>
+
+        <!-- SEÇÃO 1: COUNTDOWN ROMÂNTICO -->
+        <section class="relative bg-white/85 backdrop-blur-md rounded-[1.75rem] sm:rounded-[2.2rem] p-5 sm:p-10 border-4 border-white shadow-romantic mb-10 sm:mb-14 text-center">
+            <!-- Detalhe de fita adesiva no topo do cartão -->
+            <div class="washi-tape w-24 sm:w-28 h-6 sm:h-7 mx-auto -mt-8 sm:-mt-10 mb-4 sm:mb-5 rounded-sm -rotate-2"></div>
+
+            <div class="inline-block bg-butterDeep text-amber-900 font-bold text-[11px] sm:text-sm px-3.5 sm:px-4 py-1.5 rounded-full mb-3 border border-amber-200 leading-snug">
+                ✨ Conto com a sua presença para comemorar
+            </div>
+
+            <h1 id="main-headline" class="font-serif text-2xl sm:text-5xl font-bold text-loveRed leading-tight mb-2 px-1">
+                Nosso Aniversário de Namoro
+            </h1>
+            
+            <p id="target-date-subtitle" class="text-rose-700/80 font-semibold text-xs sm:text-base mb-6 sm:mb-8">
+                Falta pouquinho para comemorarmos o nosso amor 💕
+            </p>
+
+            <!-- Blocos do Contador -->
+            <div id="countdown-grid" class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-5 max-w-2xl mx-auto">
+                <!-- Dias -->
+                <div class="bg-gradient-to-b from-blush/80 to-rose-100/70 rounded-2xl sm:rounded-3xl p-3.5 sm:p-5 border-2 border-rose-200/80 shadow-inner">
+                    <span id="days" class="block font-serif text-3xl sm:text-5xl font-bold text-loveRed tabular-nums">00</span>
+                    <span class="text-[11px] sm:text-sm font-bold uppercase tracking-wider text-rose-700 mt-1 block">Dias</span>
+                </div>
+                <!-- Horas -->
+                <div class="bg-gradient-to-b from-butterDeep/80 to-amber-100/60 rounded-2xl sm:rounded-3xl p-3.5 sm:p-5 border-2 border-amber-200/80 shadow-inner">
+                    <span id="hours" class="block font-serif text-3xl sm:text-5xl font-bold text-cherry tabular-nums">00</span>
+                    <span class="text-[11px] sm:text-sm font-bold uppercase tracking-wider text-amber-900/80 mt-1 block">Horas</span>
+                </div>
+                <!-- Minutos -->
+                <div class="bg-gradient-to-b from-blush/80 to-rose-100/70 rounded-2xl sm:rounded-3xl p-3.5 sm:p-5 border-2 border-rose-200/80 shadow-inner">
+                    <span id="minutes" class="block font-serif text-3xl sm:text-5xl font-bold text-loveRed tabular-nums">00</span>
+                    <span class="text-[11px] sm:text-sm font-bold uppercase tracking-wider text-rose-700 mt-1 block">Minutos</span>
+                </div>
+                <!-- Segundos -->
+                <div class="bg-gradient-to-b from-rose-500 to-loveRed rounded-2xl sm:rounded-3xl p-3.5 sm:p-5 border-2 border-rose-400 text-white shadow-md">
+                    <span id="seconds" class="block font-serif text-3xl sm:text-5xl font-bold tabular-nums">00</span>
+                    <span class="text-[11px] sm:text-sm font-bold uppercase tracking-wider text-rose-100 mt-1 block">Segundos</span>
+                </div>
+            </div>
+
+            <!-- Mensagem especial quando chega o dia -->
+            <div id="celebration-banner" class="hidden mt-6 bg-gradient-to-r from-loveRed via-bubblegum to-loveRed text-white p-5 rounded-3xl shadow-lg animate-bounce">
+                <p class="font-serif text-2xl sm:text-3xl font-bold">Feliz Nosso Dia, Meu Amor! 🎉💖</p>
+                <p class="text-sm sm:text-base mt-1 font-medium">Que seja apenas o começo de muitos verões juntos!</p>
+            </div>
+        </section>
+
+        <!-- SEÇÃO 2: MURAL INTERATIVO DE VERÃO -->
+        <section class="mb-12">
+            <div class="text-center max-w-xl mx-auto mb-8">
+                <h2 class="font-serif text-2xl sm:text-4xl font-bold text-rose-950 mb-2">
+                    Mural de Aventuras
+                </h2>
+
+                <!-- Barra de Progresso Romântica -->
+                <div class="mt-5 bg-white/80 p-3 rounded-2xl border-2 border-rose-100 shadow-sm max-w-sm mx-auto">
+                    <div class="flex justify-between text-xs font-bold text-rose-800 mb-1.5">
+                        <span>Nossas memórias de verão</span>
+                        <span id="progress-text">0 de 8 feitos 💖</span>
+                    </div>
+                    <div class="w-full bg-rose-100 rounded-full h-2.5 overflow-hidden">
+                        <div id="progress-bar" class="bg-gradient-to-r from-bubblegum to-loveRed h-2.5 rounded-full transition-all duration-500" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Grade / Constelação de Adesivos Clicáveis -->
+            <div id="stickers-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-6">
+                <!-- Os adesivos são renderizados via JavaScript -->
+            </div>
+
+            <!-- Botão para Adicionar Novo Plano de Verão -->
+            <div class="text-center mt-8 sm:mt-9 flex flex-col items-center gap-3 px-2">
+                <button onclick="openAddPlanModal()" 
+                    class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-loveRed hover:bg-cherry text-white font-bold text-sm sm:text-base px-6 py-3.5 rounded-full shadow-romantic transition-all hover:-translate-y-0.5 active:scale-95 cursor-pointer">
+                    <span class="text-lg">✨</span>
+                    <span>Adicionar Novo Plano de Verão</span>
+                </button>
+
+                <!-- Botão utilitário para exportar lista editada -->
+                <button id="copy-json-btn" onclick="copyPlansJSON()" 
+                    class="inline-flex items-center gap-1.5 bg-white/85 hover:bg-white text-rose-700 border border-rose-200 font-semibold text-xs px-4 py-2 rounded-full shadow-sm transition-all cursor-pointer active:scale-95">
+                    <span>📋</span>
+                    <span id="copy-json-label">Copiar lista atualizada (JSON)</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- RODAPÉ -->
+        <footer class="text-center text-rose-700/70 text-xs sm:text-sm font-semibold pb-6">
+            Feito com todo o meu amor para nós dois ❤️
+        </footer>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- MODAL 1: BILHETINHO / POLAROID DO PLANO DE VERÃO (COM MODO EDIÇÃO)    -->
+    <!-- ===================================================================== -->
+    <div id="plan-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-3 sm:p-4 modal-backdrop" onclick="closeModalOnBackdrop(event, 'plan-modal')">
+        <div class="bg-butter border-4 border-white rounded-[1.75rem] sm:rounded-[2rem] max-w-md w-full p-5 sm:p-7 shadow-2xl relative transform transition-all scale-100 max-h-[90dvh] overflow-y-auto">
+            <!-- Botão Fechar (z-30 bem visível acima da polaroid) -->
+            <button onclick="closeModal('plan-modal')" class="absolute top-3 right-3 z-30 w-10 h-10 rounded-full bg-white hover:bg-rose-100 text-loveRed border-2 border-rose-100 shadow-md flex items-center justify-center font-bold transition-colors cursor-pointer" aria-label="Fechar">
+                ✕
+            </button>
+
+            <!-- MODO VISUALIZAÇÃO (POLAROID) -->
+            <div id="plan-view-mode">
+                <!-- Polaroid Frame -->
+                <div id="modal-polaroid-bg" class="bg-blush rounded-2xl p-6 text-center mt-2 mb-5 border-2 border-white shadow-inner relative z-10">
+                    <div class="washi-tape w-20 h-5 mx-auto -mt-8 mb-3 rounded-sm rotate-2"></div>
+                    <div id="modal-emoji" class="text-6xl sm:text-7xl mb-2 animate-float select-none">🌅</div>
+                    <span id="modal-tag" class="inline-block bg-white/90 text-loveRed text-xs font-bold px-3 py-1 rounded-full shadow-sm">
+                        Plano de Verão
+                    </span>
+                </div>
+
+                <h3 id="modal-title" class="font-serif text-2xl font-bold text-rose-950 text-center mb-2">
+                    Título do Plano
+                </h3>
+
+                <p id="modal-description" class="text-rose-900/85 text-center text-sm sm:text-base leading-relaxed mb-6 font-medium bg-white/70 p-4 rounded-2xl border border-rose-100">
+                    Descrição carinhosa do plano...
+                </p>
+
+                <!-- Botões de Ação -->
+                <div class="flex flex-col gap-2.5">
+                    <button id="toggle-done-btn" onclick="togglePlanCompleted()" 
+                        class="w-full py-3.5 px-5 rounded-2xl font-bold text-base transition-all flex items-center justify-center gap-2 shadow-md cursor-pointer active:scale-95">
+                        <!-- Conteúdo atualizado via JS -->
+                    </button>
+
+                    <button onclick="enablePlanEditMode()" 
+                        class="w-full py-2.5 px-4 rounded-xl font-bold text-xs sm:text-sm text-rose-700 bg-white/80 hover:bg-white border border-rose-200 transition-all flex items-center justify-center gap-1.5 cursor-pointer">
+                        <span>✏️</span>
+                        <span>Editar este card</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- MODO EDIÇÃO DO CARD -->
+            <form id="plan-edit-mode" onsubmit="savePlanEdits(event)" class="hidden space-y-3.5 mt-2">
+                <div class="text-center mb-2">
+                    <span class="inline-block bg-rose-100 text-loveRed text-xs font-bold px-3 py-1 rounded-full">
+                        ✏️ Editando Card
+                    </span>
+                </div>
+
+                <!-- Seletor rápido de emoji + input livre -->
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-rose-800 mb-1">Ícone / Emoji</label>
+                    <div class="flex items-center gap-2 mb-2">
+                        <input type="text" id="edit-plan-emoji" maxlength="6" required
+                            class="w-14 sm:w-16 text-center text-2xl py-2 rounded-xl bg-white border-2 border-rose-200 focus:border-loveRed focus:outline-none shrink-0">
+                        <div class="flex-1 grid grid-cols-6 gap-1" id="edit-emoji-quick-picker">
+                            <!-- Botões rápidos via JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-rose-800 mb-1">Etiqueta / Categoria</label>
+                    <input type="text" id="edit-plan-tag" placeholder="Ex: Fim de tarde dourado" maxlength="35" required
+                        class="w-full px-3.5 py-2.5 rounded-xl bg-white border-2 border-rose-200 focus:border-loveRed focus:outline-none font-semibold text-base sm:text-sm text-rose-950">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-rose-800 mb-1">Título do Plano</label>
+                    <input type="text" id="edit-plan-title" placeholder="Ex: Piquenique ao Pôr do Sol" maxlength="45" required
+                        class="w-full px-3.5 py-2.5 rounded-xl bg-white border-2 border-rose-200 focus:border-loveRed focus:outline-none font-semibold text-base sm:text-sm text-rose-950">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-rose-800 mb-1">Bilhetinho / Descrição</label>
+                    <textarea id="edit-plan-desc" rows="3" placeholder="Escreva os detalhes desse plano..." required
+                        class="w-full px-3.5 py-2.5 rounded-xl bg-white border-2 border-rose-200 focus:border-loveRed focus:outline-none font-medium text-base sm:text-sm text-rose-950 resize-none"></textarea>
+                </div>
+
+                <div class="flex flex-col gap-2 pt-2">
+                    <button type="submit" 
+                        class="w-full py-3 px-5 rounded-2xl font-bold text-sm sm:text-base bg-loveRed hover:bg-cherry text-white shadow-romantic transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-95">
+                        <span>💾</span>
+                        <span>Salvar Alterações</span>
+                    </button>
+
+                    <div class="flex gap-2">
+                        <button type="button" onclick="cancelPlanEditMode()" 
+                            class="flex-1 py-2.5 px-3 rounded-xl font-bold text-xs text-rose-800 bg-white hover:bg-rose-50 border border-rose-200 transition-colors cursor-pointer">
+                            Cancelar
+                        </button>
+                        <button type="button" onclick="deleteCurrentPlan()" 
+                            class="flex-1 py-2.5 px-3 rounded-xl font-bold text-xs text-red-700 bg-red-50 hover:bg-red-100 border border-red-200 transition-colors cursor-pointer">
+                            🗑️ Excluir card
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- MODAL 2: ADICIONAR NOVO DESEJO DE VERÃO                               -->
+    <!-- ===================================================================== -->
+    <div id="add-plan-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-3 sm:p-4 modal-backdrop" onclick="closeModalOnBackdrop(event, 'add-plan-modal')">
+        <div class="bg-white border-4 border-amber-100 rounded-[1.75rem] sm:rounded-[2rem] max-w-md w-full p-5 sm:p-7 shadow-2xl relative max-h-[90dvh] overflow-y-auto">
+            <button onclick="closeModal('add-plan-modal')" class="absolute top-3.5 right-3.5 w-10 h-10 rounded-full bg-rose-50 hover:bg-rose-100 text-loveRed flex items-center justify-center font-bold cursor-pointer">
+                ✕
+            </button>
+
+            <div class="text-center mb-5">
+                <span class="text-3xl">🍉</span>
+                <h3 class="font-serif text-2xl font-bold text-loveRed mt-1">Novo Plano de Verão</h3>
+                <p class="text-xs sm:text-sm text-rose-700/80 font-medium">Crie um novo adesivo para a nossa coleção!</p>
+            </div>
+
+            <form onsubmit="addNewSummerPlan(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-rose-800 mb-1.5">Escolha um Ícone</label>
+                    <div class="grid grid-cols-6 gap-1.5 sm:gap-2" id="emoji-picker">
+                        <!-- Botões de emoji gerados via JS -->
+                    </div>
+                    <input type="hidden" id="selected-emoji" value="🍓">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-rose-800 mb-1">Nome do Plano</label>
+                    <input type="text" id="new-plan-title" placeholder="Ex: Tomar banho de chuva" required maxlength="35"
+                        class="w-full px-4 py-3 rounded-xl bg-butter border-2 border-rose-200 focus:border-loveRed focus:outline-none font-semibold text-base text-rose-950">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-rose-800 mb-1">Bilhetinho Carinhoso</label>
+                    <textarea id="new-plan-desc" rows="3" placeholder="Escreva o que vocês vão fazer juntos..." required
+                        class="w-full px-4 py-3 rounded-xl bg-butter border-2 border-rose-200 focus:border-loveRed focus:outline-none font-medium text-base text-rose-950 resize-none"></textarea>
+                </div>
+                    <input type="hidden" id="selected-emoji" value="🍓">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-rose-800 mb-1">Nome do Plano</label>
+                    <input type="text" id="new-plan-title" placeholder="Ex: Tomar banho de chuva" required maxlength="35"
+                        class="w-full px-4 py-3 rounded-xl bg-butter border-2 border-rose-200 focus:border-loveRed focus:outline-none font-semibold text-rose-950">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-rose-800 mb-1">Bilhetinho Carinhoso</label>
+                    <textarea id="new-plan-desc" rows="3" placeholder="Escreva o que vocês vão fazer juntos..." required
+                        class="w-full px-4 py-3 rounded-xl bg-butter border-2 border-rose-200 focus:border-loveRed focus:outline-none font-medium text-rose-950 resize-none"></textarea>
+                </div>
+
+                <button type="submit" class="w-full bg-loveRed hover:bg-cherry text-white font-bold py-3.5 rounded-2xl shadow-romantic transition-all cursor-pointer active:scale-95">
+                    Colar no Mural ✨
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- JAVASCRIPT: LÓGICA DO COUNTDOWN, ADESIVOS E INTERATIVIDADE            -->
+    <!-- ===================================================================== -->
+    <script>
+        // --- 1. DADOS INICIAIS PADRÃO ---
+        const DEFAULT_PLANS = [
+            {
+                id: 'plan-1',
+                emoji: '🧺',
+                title: 'Piquenique ao Pôr do Sol',
+                tag: 'Fim de tarde dourado',
+                description: 'Estender uma toalha bem bonita na grama, levar frutas frescas, docinhos e ficar conversando até o céu ficar todo rosa e laranja.',
+                bg: 'bg-rose-100/90',
+                rotate: '-2deg',
+                completed: false,
+                custom: false
+            },
+            {
+                id: 'plan-2',
+                emoji: '🍦',
+                title: 'Sorvete & Caminhada',
+                tag: 'Doce de verão',
+                description: 'Sair sem pressa no meio da tarde calorosa para tomar o nosso sorvete favorito e caminhar de mãos dadas rindo de bobeira.',
+                bg: 'bg-amber-100/90',
+                rotate: '2deg',
+                completed: false,
+                custom: false
+            },
+            {
+                id: 'plan-3',
+                emoji: '✨',
+                title: 'Ver as Estrelas',
+                tag: 'Noite mágica',
+                description: 'Deitar olhando para o céu limpo de verão, tentar achar constelações e fazer pedidos secretos juntos.',
+                bg: 'bg-blush',
+                rotate: '-1.5deg',
+                completed: false,
+                custom: false
+            },
+            {
+                id: 'plan-4',
+                emoji: '🍿',
+                title: 'Cinema ao Ar Livre',
+                tag: 'Sessão pipoca',
+                description: 'Montar um cantinho cheio de almofadas e pisca-pisca na varanda ou quintal para assistir nosso filme favorito abraçadinhos.',
+                bg: 'bg-rose-100/90',
+                rotate: '2.5deg',
+                completed: false,
+                custom: false
+            },
+            {
+                id: 'plan-5',
+                emoji: '🚗',
+                title: 'Viagem Bate-Volta',
+                tag: 'Pé na estrada',
+                description: 'Colocar nossa playlist no volume máximo, abrir os vidros para sentir o vento e descobrir um lugar novo juntos.',
+                bg: 'bg-amber-100/90',
+                rotate: '1.5deg',
+                completed: false,
+                custom: false
+            },
+            {
+                id: 'plan-6',
+                emoji: '🍉',
+                title: 'Cozinhar Algo Gelado',
+                tag: 'Masterchef do amor',
+                description: 'Preparar drinks sem álcool super coloridos, espetinhos de frutas ou uma sobremesa gelada fazendo bagunça na cozinha.',
+                bg: 'bg-blush',
+                rotate: '-2.5deg',
+                completed: false,
+                custom: false
+            },
+            {
+                id: 'plan-7',
+                emoji: '🌅',
+                title: 'Ver o Sol Nascer',
+                tag: 'Madrugada especial',
+                description: 'Acordar bem cedinho, levar um cafezinho quente e assistir o primeiro raio de sol do dia iluminar você.',
+                bg: 'bg-rose-100/90',
+                rotate: '2deg',
+                completed: false,
+                custom: false
+            },
+            {
+                id: 'plan-8',
+                emoji: '🚲',
+                title: 'Passeio de Bicicleta',
+                tag: 'Brisa leve',
+                description: 'Dar uma volta no parque ou na orla sentindo a brisa do verão e parando para tirar várias fotos espontâneas.',
+                bg: 'bg-amber-100/90',
+                rotate: '-1.5deg',
+                completed: false,
+                custom: false
+            }
+        ];
+
+        const EMOJI_CHOICES = ['🍓', '🏖️', '🌻', '🍹', '📸', '🎶', '🌊', '🪁', '🍕', '🎨', '⛵', '💖'];
+
+        // --- 2. ESTADO DA APLICAÇÃO ---
+        function getDefaultTargetDate() {
+            // Data oficial: 23 de abril de 2027 à meia-noite (horário local)
+            return new Date(2027, 3, 23, 0, 0, 0).toISOString();
+        }
+
+        let appState = {
+            names: 'Você & Eu',
+            headline: 'Nosso Aniversário de Namoro',
+            targetDate: getDefaultTargetDate(),
+            plans: [...DEFAULT_PLANS]
+        };
+
+        let activePlanId = null;
+
+        // Carrega dados salvos no localStorage (chave v2 para aplicar a nova data padrão imediatamente)
+        function loadState() {
+            try {
+                const saved = localStorage.getItem('romanticSummerCountdown_v2');
+                if (saved) {
+                    const parsed = JSON.parse(saved);
+                    appState = { ...appState, ...parsed };
+                }
+            } catch (e) {
+                console.warn('Não foi possível carregar o localStorage:', e);
+            }
+        }
+
+        function saveState() {
+            try {
+                localStorage.setItem('romanticSummerCountdown_v2', JSON.stringify(appState));
+            } catch (e) {
+                console.warn('Erro ao salvar no localStorage:', e);
+            }
+        }
+
+        // --- 3. LÓGICA DO COUNTDOWN ---
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const target = new Date(appState.targetDate).getTime();
+            const distance = target - now;
+
+            const daysEl = document.getElementById('days');
+            const hoursEl = document.getElementById('hours');
+            const minutesEl = document.getElementById('minutes');
+            const secondsEl = document.getElementById('seconds');
+            const celebrationBanner = document.getElementById('celebration-banner');
+
+            if (distance <= 0) {
+                daysEl.textContent = '00';
+                hoursEl.textContent = '00';
+                minutesEl.textContent = '00';
+                secondsEl.textContent = '00';
+                celebrationBanner.classList.remove('hidden');
+                return;
+            }
+
+            celebrationBanner.classList.add('hidden');
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            daysEl.textContent = String(days).padStart(2, '0');
+            hoursEl.textContent = String(hours).padStart(2, '0');
+            minutesEl.textContent = String(minutes).padStart(2, '0');
+            secondsEl.textContent = String(seconds).padStart(2, '0');
+        }
+
+        function updateHeaderUI() {
+            document.getElementById('couple-names-display').textContent = appState.names;
+            document.getElementById('main-headline').textContent = appState.headline;
+
+            const dateObj = new Date(appState.targetDate);
+            const formattedDate = dateObj.toLocaleDateString('pt-BR', {
+                day: '2-digit',
+                month: 'long',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+            document.getElementById('target-date-subtitle').textContent = `Marcado para ${formattedDate} 💕`;
+        }
+
+        // --- 4. RENDERIZAÇÃO DOS ADESIVOS DE VERÃO ---
+        function renderStickers() {
+            const grid = document.getElementById('stickers-grid');
+            grid.innerHTML = '';
+
+            appState.plans.forEach((plan) => {
+                const card = document.createElement('button');
+                card.type = 'button';
+                card.onclick = () => openPlanModal(plan.id);
+                card.style.setProperty('--hover-rotate', plan.rotate || '2deg');
+                card.style.transform = `rotate(${plan.rotate || '0deg'})`;
+                
+                card.className = `sticker-card relative ${plan.bg} rounded-[1.75rem] p-5 flex flex-col items-center justify-center text-center shadow-sticker hover:shadow-sticker-hover cursor-pointer group min-h-[155px]`;
+
+                // Selo de concluído ("Já fizemos!")
+                const completedBadge = plan.completed 
+                    ? `<span class="absolute -top-2.5 -right-2.5 bg-loveRed text-white text-[11px] font-bold px-2.5 py-1 rounded-full shadow-md border-2 border-white flex items-center gap-1">
+                         💖 Feito!
+                       </span>`
+                    : '';
+
+                card.innerHTML = `
+                    ${completedBadge}
+                    <div class="text-4xl sm:text-5xl mb-2.5 transition-transform duration-300 group-hover:scale-115 select-none">
+                        ${plan.emoji}
+                    </div>
+                    <h3 class="font-bold text-rose-950 text-sm sm:text-base leading-snug">
+                        ${plan.title}
+                    </h3>
+                    <span class="text-[11px] font-semibold text-rose-700/75 mt-1">
+                        ${plan.completed ? 'Memória guardada ✨' : 'Clique para abrir 💌'}
+                    </span>
+                `;
+
+                grid.appendChild(card);
+            });
+
+            updateProgress();
+        }
+
+        function updateProgress() {
+            const total = appState.plans.length;
+            const completed = appState.plans.filter(p => p.completed).length;
+            const percentage = total > 0 ? Math.round((completed / total) * 100) : 0;
+
+            document.getElementById('progress-text').textContent = `${completed} de ${total} feitos 💖`;
+            document.getElementById('progress-bar').style.width = `${percentage}%`;
+        }
+
+        // --- 5. INTERAÇÕES DOS MODAIS ---
+        function openPlanModal(planId) {
+            const plan = appState.plans.find(p => p.id === planId);
+            if (!plan) return;
+
+            activePlanId = planId;
+
+            // Garante que sempre abre no modo visualização
+            cancelPlanEditMode();
+
+            document.getElementById('modal-emoji').textContent = plan.emoji;
+            document.getElementById('modal-tag').textContent = plan.tag || 'Plano de Verão';
+            document.getElementById('modal-title').textContent = plan.title;
+            document.getElementById('modal-description').textContent = plan.description;
+
+            const polaroidBg = document.getElementById('modal-polaroid-bg');
+            polaroidBg.className = `${plan.bg} rounded-2xl p-6 text-center mt-2 mb-5 border-2 border-white shadow-inner relative z-10`;
+
+            updateToggleButtonUI(plan.completed);
+
+            openModal('plan-modal');
+        }
+
+        function updateToggleButtonUI(isCompleted) {
+            const btn = document.getElementById('toggle-done-btn');
+            if (!btn) return;
+
+            if (isCompleted) {
+                btn.className = 'w-full py-3.5 px-5 rounded-2xl font-bold text-base bg-emerald-500 hover:bg-emerald-600 text-white transition-all flex items-center justify-center gap-2 shadow-md cursor-pointer active:scale-95';
+                btn.innerHTML = '<span>💖</span><span>Já fizemos! (Clique para desmarcar)</span>';
+            } else {
+                btn.className = 'w-full py-3.5 px-5 rounded-2xl font-bold text-base bg-loveRed hover:bg-cherry text-white transition-all flex items-center justify-center gap-2 shadow-romantic cursor-pointer active:scale-95';
+                btn.innerHTML = '<span>✨</span><span>Marcar como Já fizemos!</span>';
+            }
+        }
+
+        function enablePlanEditMode() {
+            const plan = appState.plans.find(p => p.id === activePlanId);
+            if (!plan) return;
+
+            document.getElementById('edit-plan-emoji').value = plan.emoji;
+            document.getElementById('edit-plan-tag').value = plan.tag || '';
+            document.getElementById('edit-plan-title').value = plan.title;
+            document.getElementById('edit-plan-desc').value = plan.description;
+
+            // Renderiza atalhos rápidos de emojis
+            const quickPicker = document.getElementById('edit-emoji-quick-picker');
+            quickPicker.innerHTML = '';
+            EMOJI_CHOICES.slice(0, 6).forEach((emoji) => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = emoji;
+                btn.className = 'text-lg p-1.5 rounded-lg bg-white hover:bg-rose-100 border border-rose-200 transition-transform active:scale-90 cursor-pointer';
+                btn.onclick = () => {
+                    document.getElementById('edit-plan-emoji').value = emoji;
+                };
+                quickPicker.appendChild(btn);
+            });
+
+            document.getElementById('plan-view-mode').classList.add('hidden');
+            document.getElementById('plan-edit-mode').classList.remove('hidden');
+        }
+
+        function cancelPlanEditMode() {
+            document.getElementById('plan-edit-mode').classList.add('hidden');
+            document.getElementById('plan-view-mode').classList.remove('hidden');
+        }
+
+        function savePlanEdits(event) {
+            event.preventDefault();
+            const plan = appState.plans.find(p => p.id === activePlanId);
+            if (!plan) return;
+
+            const newEmoji = document.getElementById('edit-plan-emoji').value.trim();
+            const newTag = document.getElementById('edit-plan-tag').value.trim();
+            const newTitle = document.getElementById('edit-plan-title').value.trim();
+            const newDesc = document.getElementById('edit-plan-desc').value.trim();
+
+            if (!newTitle || !newDesc) return;
+
+            plan.emoji = newEmoji || plan.emoji;
+            plan.tag = newTag || 'Plano de Verão';
+            plan.title = newTitle;
+            plan.description = newDesc;
+
+            saveState();
+            renderStickers();
+            openPlanModal(plan.id);
+        }
+
+        function copyPlansJSON() {
+            const jsonText = JSON.stringify(appState.plans, null, 2);
+            const label = document.getElementById('copy-json-label');
+            const originalText = 'Copiar lista atualizada (JSON)';
+
+            const textArea = document.createElement('textarea');
+            textArea.value = jsonText;
+            textArea.style.position = 'fixed';
+            textArea.style.left = '-9999px';
+            document.body.appendChild(textArea);
+            textArea.select();
+
+            try {
+                document.execCommand('copy');
+                label.textContent = 'Lista copiada! ✅';
+                setTimeout(() => {
+                    label.textContent = originalText;
+                }, 2500);
+            } catch (err) {
+                console.warn('Erro ao copiar JSON:', err);
+                label.textContent = 'Não foi possível copiar';
+                setTimeout(() => {
+                    label.textContent = originalText;
+                }, 2500);
+            } finally {
+                document.body.removeChild(textArea);
+            }
+        }
+
+        function togglePlanCompleted() {
+            const plan = appState.plans.find(p => p.id === activePlanId);
+            if (!plan) return;
+
+            plan.completed = !plan.completed;
+            saveState();
+            renderStickers();
+            updateToggleButtonUI(plan.completed);
+
+            if (plan.completed) {
+                triggerRomanticConfetti();
+            }
+        }
+
+        function deleteCurrentPlan() {
+            appState.plans = appState.plans.filter(p => p.id !== activePlanId);
+            saveState();
+            renderStickers();
+            closeModal('plan-modal');
+        }
+
+        // Modal de Adicionar Plano
+        function openAddPlanModal() {
+            document.getElementById('new-plan-title').value = '';
+            document.getElementById('new-plan-desc').value = '';
+            renderEmojiPicker();
+            openModal('add-plan-modal');
+        }
+
+        function renderEmojiPicker() {
+            const container = document.getElementById('emoji-picker');
+            const hiddenInput = document.getElementById('selected-emoji');
+            container.innerHTML = '';
+
+            EMOJI_CHOICES.forEach((emoji, index) => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = emoji;
+                const isSelected = emoji === hiddenInput.value || (index === 0 && !EMOJI_CHOICES.includes(hiddenInput.value));
+                
+                btn.className = `text-2xl p-2 rounded-xl border-2 transition-all cursor-pointer ${
+                    isSelected ? 'bg-rose-100 border-loveRed scale-110' : 'bg-butter border-rose-100 hover:bg-rose-50'
+                }`;
+
+                btn.onclick = () => {
+                    hiddenInput.value = emoji;
+                    renderEmojiPicker();
+                };
+
+                container.appendChild(btn);
+            });
+        }
+
+        function addNewSummerPlan(event) {
+            event.preventDefault();
+            const emoji = document.getElementById('selected-emoji').value || '🍓';
+            const title = document.getElementById('new-plan-title').value.trim();
+            const description = document.getElementById('new-plan-desc').value.trim();
+
+            if (!title || !description) return;
+
+            const bgOptions = ['bg-rose-100/90', 'bg-amber-100/90', 'bg-blush'];
+            const rotOptions = ['-2deg', '2deg', '-1.5deg', '1.5deg'];
+
+            const newPlan = {
+                id: 'custom-' + Date.now(),
+                emoji,
+                title,
+                tag: 'Nosso desejo especial ✨',
+                description,
+                bg: bgOptions[appState.plans.length % bgOptions.length],
+                rotate: rotOptions[appState.plans.length % rotOptions.length],
+                completed: false,
+                custom: true
+            };
+
+            appState.plans.push(newPlan);
+            saveState();
+            renderStickers();
+            closeModal('add-plan-modal');
+            triggerRomanticConfetti();
+        }
+
+        // Utilitários de Modal
+        function openModal(id) {
+            const modal = document.getElementById(id);
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal(id) {
+            const modal = document.getElementById(id);
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            document.body.style.overflow = '';
+        }
+
+        function closeModalOnBackdrop(event, id) {
+            if (event.target.id === id) {
+                closeModal(id);
+            }
+        }
+
+        // --- 6. EFEITOS VISUAIS (CONFETE & CORAÇÕES FLUTUANTES) ---
+        function triggerRomanticConfetti() {
+            if (typeof confetti === 'function') {
+                confetti({
+                    particleCount: 65,
+                    spread: 70,
+                    origin: { y: 0.65 },
+                    colors: ['#E11D48', '#FB7185', '#FDE047', '#FDA4AF', '#FFF1F2']
+                });
+            }
+        }
+
+        function initFloatingBackground() {
+            const container = document.getElementById('floating-bg');
+            const icons = ['❤️', '💕', '✨', '☀️', '🌸', '🍓'];
+            
+            for (let i = 0; i < 14; i++) {
+                const el = document.createElement('div');
+                el.className = 'floating-bg-item select-none';
+                el.textContent = icons[i % icons.length];
+                el.style.left = `${Math.random() * 95}%`;
+                el.style.fontSize = `${Math.random() * 14 + 14}px`;
+                el.style.animationDuration = `${Math.random() * 12 + 14}s`;
+                el.style.animationDelay = `${Math.random() * 10}s`;
+                container.appendChild(el);
+            }
+        }
+
+        // --- INICIALIZAÇÃO ---
+        window.addEventListener('DOMContentLoaded', () => {
+            loadState();
+            updateHeaderUI();
+            updateCountdown();
+            renderStickers();
+            initFloatingBackground();
+            setInterval(updateCountdown, 1000);
+        });
+    </script>
+</body>
+</html>
